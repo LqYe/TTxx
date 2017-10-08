@@ -16,7 +16,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
 
 
-    fileprivate func displayHomePage() {
+    func displayHomePage() {
         let stortboard = UIStoryboard(name: "Main", bundle: nil)
         //let vc = stortboard.instantiateViewController(withIdentifier: "tweetsNavViewController")
         

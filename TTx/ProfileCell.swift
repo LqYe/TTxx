@@ -27,10 +27,11 @@ class ProfileCell: UITableViewCell {
                 let bannerUrl = URL(string: (user.profile_banner_url)!)!
                 bannerImageView.setImageWith(bannerUrl)
                 
-            } else {
+            } else if (user.profile_background_image_url_https != nil){
                 let backgroundUrl = URL(string: (user.profile_background_image_url_https)!)!
                 bannerImageView.setImageWith(backgroundUrl)
             }
+            
             let profileUrl = URL(string: (user.profile_image_url_https)!)!
             profileImageView.setImageWith(profileUrl)
             

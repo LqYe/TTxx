@@ -16,6 +16,40 @@ class TwitterClient: BDBOAuth1SessionManager {
     var onLoginSuccess: (() -> Void)?
     var onLoginFailed: ((Error?) -> Void)?
     
+    let defaults = UserDefaults.standard
+
+    var currentAccount: Account! {
+        willSet {
+            if (currentAccount != nil) {
+                currentAccount.selected = false
+            }
+        }
+        didSet {
+            if (currentAccount != nil) {
+                currentAccount.selected = true
+                TwitterClient.sharedInstance!.requestSerializer.removeAccessToken()
+                TwitterClient.sharedInstance!.requestSerializer.saveAccessToken(currentAccount.accessToken)
+                User.currentUser = currentAccount.user
+            }
+        }
+    }
+    
+    var accounts:[Account] = [Account]()
+        
+    func addAccount(newAccount: Account) {
+        
+        accounts.append(newAccount)
+        var savedAccounts = accounts
+        
+        if let defaultAccounts = defaults.object(forKey: "currentTwitterAccounts") as? [Account] {
+            savedAccounts = defaultAccounts
+        }
+        
+        savedAccounts.append(newAccount)
+        defaults.set(savedAccounts, forKey: "currentTwitterAccounts")
+    }
+    
+    
     func login(success: (() -> Void)!, failure: ((Error?) -> Void)!) {
         
         //clear keychains and previous sessions
@@ -62,6 +96,11 @@ class TwitterClient: BDBOAuth1SessionManager {
                 print("***************Start Printing User************")
                 print(user)
                 User.currentUser = user
+                
+                //new logic for multiple account logins
+                let newAccount = Account(user: user, accessToken: accessToken)
+                TwitterClient.sharedInstance!.accounts.append(newAccount)
+                TwitterClient.sharedInstance!.currentAccount = newAccount
                 
                 self.onLoginSuccess?()
                 
