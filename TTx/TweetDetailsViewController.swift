@@ -27,6 +27,7 @@ class TweetDetailsViewController: UIViewController {
     @IBOutlet weak var statsView: UIView!
     @IBOutlet weak var actionItemView: UIView!
     
+    @IBOutlet weak var retweetLabelHeight: NSLayoutConstraint!
     var tweet: Tweet!
     var retweeted_by: String?
     var updateTweetHandler: () -> Void = { () in }
@@ -57,17 +58,20 @@ class TweetDetailsViewController: UIViewController {
         if tweet.retweeted != nil && tweet.retweeted! {
             retweetButton.setImage(UIImage(named: "retweeted"), for: UIControlState.normal)
         }
-        
-        let tweetDetailGroupViewYconstraint = NSLayoutConstraint(item: tweetDetailsView, attribute: .top, relatedBy: .equal, toItem: retweetedLabel.safeAreaLayoutGuide, attribute: .top, multiplier: 1, constant: 0)
+//
+//        let tweetDetailGroupViewYconstraint = NSLayoutConstraint(item: tweetDetailsView, attribute: .top, relatedBy: .equal, toItem: retweetedLabel.safeAreaLayoutGuide, attribute: .top, multiplier: 1, constant: 0)
 
         if retweeted_by != nil {
             retweetedLabel.isHidden = false
             retweetedLabel.text = "retweeted by \(retweeted_by!)"
-            NSLayoutConstraint.deactivate([tweetDetailGroupViewYconstraint])
+            retweetLabelHeight.constant = 20
+            
+            //NSLayoutConstraint.deactivate([tweetDetailGroupViewYconstraint])
             
         } else {
             retweetedLabel.isHidden = true
-            NSLayoutConstraint.activate([tweetDetailGroupViewYconstraint])
+            retweetLabelHeight.constant = 0;
+            //NSLayoutConstraint.activate([tweetDetailGroupViewYconstraint])
         }
         
         statsView.addTopBorder(withHeight: 2.0, andColor: UIColor.lightGray)

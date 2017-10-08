@@ -1,8 +1,8 @@
-FRAMEWORK_SEARCH_PATHS = $(inherited) "$PODS_CONFIGURATION_BUILD_DIR/AFNetworking" "$PODS_CONFIGURATION_BUILD_DIR/BDBOAuth1Manager" "$PODS_CONFIGURATION_BUILD_DIR/NSDateMinimalTimeAgo" "$PODS_CONFIGURATION_BUILD_DIR/UITextView+Placeholder" "$PODS_CONFIGURATION_BUILD_DIR/UIView+Borders"
+FRAMEWORK_SEARCH_PATHS = $(inherited) "$PODS_CONFIGURATION_BUILD_DIR/AFNetworking" "$PODS_CONFIGURATION_BUILD_DIR/BDBOAuth1Manager" "$PODS_CONFIGURATION_BUILD_DIR/FLEX" "$PODS_CONFIGURATION_BUILD_DIR/NSDateMinimalTimeAgo" "$PODS_CONFIGURATION_BUILD_DIR/UITextView+Placeholder" "$PODS_CONFIGURATION_BUILD_DIR/UIView+Borders"
 GCC_PREPROCESSOR_DEFINITIONS = $(inherited) COCOAPODS=1
 LD_RUNPATH_SEARCH_PATHS = $(inherited) '@executable_path/Frameworks' '@loader_path/Frameworks'
-OTHER_CFLAGS = $(inherited) -iquote "$PODS_CONFIGURATION_BUILD_DIR/AFNetworking/AFNetworking.framework/Headers" -iquote "$PODS_CONFIGURATION_BUILD_DIR/BDBOAuth1Manager/BDBOAuth1Manager.framework/Headers" -iquote "$PODS_CONFIGURATION_BUILD_DIR/NSDateMinimalTimeAgo/NSDateMinimalTimeAgo.framework/Headers" -iquote "$PODS_CONFIGURATION_BUILD_DIR/UITextView+Placeholder/UITextView_Placeholder.framework/Headers" -iquote "$PODS_CONFIGURATION_BUILD_DIR/UIView+Borders/UIView_Borders.framework/Headers"
-OTHER_LDFLAGS = $(inherited) -framework "AFNetworking" -framework "BDBOAuth1Manager" -framework "NSDateMinimalTimeAgo" -framework "UITextView_Placeholder" -framework "UIView_Borders"
+OTHER_CFLAGS = $(inherited) -iquote "$PODS_CONFIGURATION_BUILD_DIR/AFNetworking/AFNetworking.framework/Headers" -iquote "$PODS_CONFIGURATION_BUILD_DIR/BDBOAuth1Manager/BDBOAuth1Manager.framework/Headers" -iquote "$PODS_CONFIGURATION_BUILD_DIR/FLEX/FLEX.framework/Headers" -iquote "$PODS_CONFIGURATION_BUILD_DIR/NSDateMinimalTimeAgo/NSDateMinimalTimeAgo.framework/Headers" -iquote "$PODS_CONFIGURATION_BUILD_DIR/UITextView+Placeholder/UITextView_Placeholder.framework/Headers" -iquote "$PODS_CONFIGURATION_BUILD_DIR/UIView+Borders/UIView_Borders.framework/Headers"
+OTHER_LDFLAGS = $(inherited) -framework "AFNetworking" -framework "BDBOAuth1Manager" -framework "FLEX" -framework "NSDateMinimalTimeAgo" -framework "UITextView_Placeholder" -framework "UIView_Borders"
 PODS_BUILD_DIR = $BUILD_DIR
 PODS_CONFIGURATION_BUILD_DIR = $PODS_BUILD_DIR/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)
 PODS_PODFILE_DIR_PATH = ${SRCROOT}/.

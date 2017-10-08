@@ -25,8 +25,11 @@ class TweetCell: UITableViewCell {
     
     @IBOutlet weak var retweetButton: UIButton!
     var tweetDetailGroupViewYconstraint: NSLayoutConstraint!
-    
-    
+
+    @IBOutlet weak var retweetLabelHeight: NSLayoutConstraint!
+    //callback function on profile iamge tapped
+    var pushToProfileView: (User) -> Void = { (user) in }
+
     var tweet: Tweet! {
         didSet {
             
@@ -34,13 +37,15 @@ class TweetCell: UITableViewCell {
             if let retweeted_status = tweet.retweeted_status {
                 theTweet = retweeted_status
                 retweetedLabel.isHidden = false
+                retweetLabelHeight.constant = 20
                 retweetedLabel.text = "retweeted by \(tweet.user?.name ?? "Unknown")"
                 
-            NSLayoutConstraint.deactivate([tweetDetailGroupViewYconstraint])
+//            NSLayoutConstraint.deactivate([tweetDetailGroupViewYconstraint])
 
             } else {
                 retweetedLabel.isHidden = true
-            NSLayoutConstraint.activate([tweetDetailGroupViewYconstraint])
+                retweetLabelHeight.constant = 0
+//            NSLayoutConstraint.activate([tweetDetailGroupViewYconstraint])
             }
             
             let profileUrl = URL(string: (theTweet.user?.profile_image_url_https)!)!
@@ -77,7 +82,17 @@ class TweetCell: UITableViewCell {
         profileImageView.layer.borderColor = UIColor(white: 0.7, alpha: 0.8).cgColor
         profileImageView.layer.borderWidth = 1;
         
+        
+        let profileTapGester = UITapGestureRecognizer(target: self, action: #selector(onProfileImageTapped))
+        profileImageView.addGestureRecognizer(profileTapGester)
+        
         tweetDetailGroupViewYconstraint = NSLayoutConstraint(item: tweetDetailsView, attribute: .top, relatedBy: .equal, toItem: tweetDetailsView.superview, attribute: .top, multiplier: 1, constant: 8)
+                
+    }
+    
+    @objc func onProfileImageTapped() {
+        
+        pushToProfileView(tweet.user!)
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {

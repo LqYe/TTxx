@@ -11,4 +11,5 @@ target 'TTx' do
   pod 'NSDateMinimalTimeAgo'
   pod 'UITextView+Placeholder'
   pod 'UIView+Borders'
+  pod 'FLEX', :configurations => ['Debug']
 end

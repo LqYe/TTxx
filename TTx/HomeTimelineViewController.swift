@@ -7,10 +7,17 @@
 //
 
 import UIKit
+import FLEX
 
 class HomeTimelineViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
 
-    @IBOutlet weak var tweetsTableView: UITableView!
+    @IBOutlet weak var tweetsTableView: UITableView!{
+        didSet {
+            self.tweetsTableView.register(UINib(nibName: "TweetCellNib", bundle: Bundle.main), forCellReuseIdentifier: "TweetCell")
+            self.tweetsTableView.estimatedRowHeight = 100
+            self.tweetsTableView.rowHeight = UITableViewAutomaticDimension
+        }
+    }
     var tweets: [Tweet] = [Tweet]()
     
     //views
@@ -18,7 +25,7 @@ class HomeTimelineViewController: UIViewController, UITableViewDataSource, UITab
         
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        FLEXManager.shared().showExplorer()
         // Do any additional setup after loading the view.
         tweetsTableView.estimatedRowHeight = 200
         tweetsTableView.rowHeight = UITableViewAutomaticDimension
@@ -114,7 +121,18 @@ class HomeTimelineViewController: UIViewController, UITableViewDataSource, UITab
         }
         
         cell.tweet = tweets[indexPath.section]
-        
+        cell.pushToProfileView = { (user: User) in
+            
+            
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            
+            //profile vc
+            let profileVC = storyboard.instantiateViewController(withIdentifier: "profileViewController") as! ProfileViewController
+            profileVC.user = user
+            self.navigationController?.pushViewController(profileVC, animated: true)
+            
+        }
+
         return cell
     }
     
@@ -122,7 +140,7 @@ class HomeTimelineViewController: UIViewController, UITableViewDataSource, UITab
         
         let cell  = tweetsTableView.cellForRow(at: indexPath) as! TweetCell
         cell.selectionStyle = .none
-        
+        self.performSegue(withIdentifier: "showTweetDetails", sender: indexPath)
     }
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
@@ -136,7 +154,7 @@ class HomeTimelineViewController: UIViewController, UITableViewDataSource, UITab
             TwitterClient.sharedInstance!.getHomeTimeline(parameters: params, success: { (homeTimeline: [Tweet]!) in
                 
                 print("***************Infinite Scroll to refresh Hometimeline************")
-                let lastIndex = self.tweets.count
+                let nextIndex = self.tweets.count
                 
                 self.tweets.append(contentsOf: homeTimeline)
                 
@@ -144,7 +162,7 @@ class HomeTimelineViewController: UIViewController, UITableViewDataSource, UITab
                 
                 Tweet.max_id = self.tweets[self.tweets.count - 1].id! - 1
                 
-                self.doUpdateNewTweet(indexSet: IndexSet((lastIndex)...(self.tweets.count - 1)))
+                self.doUpdateNewTweet(indexSet: IndexSet((nextIndex)...(self.tweets.count - 1)))
                 
             }, failure: { (error: Error!) -> Void in
                 print("Error: \(error.localizedDescription)")
@@ -154,7 +172,6 @@ class HomeTimelineViewController: UIViewController, UITableViewDataSource, UITab
         
     }
     
-
     
     // MARK: - Navigation
 
@@ -166,7 +183,8 @@ class HomeTimelineViewController: UIViewController, UITableViewDataSource, UITab
         if segue.identifier == "showTweetDetails" {
         
             let dvc = segue.destination as! TweetDetailsViewController
-            let indexPath = tweetsTableView.indexPath(for: sender as! UITableViewCell)!
+            guard let indexPath = sender as? IndexPath else { return }
+            
             let tweetCell = tweetsTableView.cellForRow(at: indexPath) as! TweetCell
             
             if let retweeted_status = tweetCell.tweet.retweeted_status {
@@ -197,7 +215,7 @@ class HomeTimelineViewController: UIViewController, UITableViewDataSource, UITab
         }
         
     }
- 
+    
     func doUpdateNewTweet(indexSet: IndexSet) {
         
         tweetsTableView.beginUpdates()

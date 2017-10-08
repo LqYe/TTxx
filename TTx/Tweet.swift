@@ -25,6 +25,7 @@ class Tweet: Decodable {
     
     static var since_id: Int64 = 0;
     static var max_id: Int64 = 0;
+    static var mentions_max_id: Int64 = 0;
     static var count: Int = 30;
     
     

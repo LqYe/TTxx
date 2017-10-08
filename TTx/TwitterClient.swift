@@ -51,18 +51,19 @@ class TwitterClient: BDBOAuth1SessionManager {
     }
     
     func handleOpenUrl(url: URL) {
-        
+
         let requestToken = BDBOAuth1Credential(queryString: url.query!)
         
         //get access token and then get user and its home timeline on success
         fetchAccessToken(withPath: AppConstants.APIConstants.accessTokenPath, method: "POST", requestToken: requestToken, success: { (accessToken : BDBOAuth1Credential!) -> Void in
-            
+            print(accessToken.token)
             self.getCurrentUser(success: { (user: User!) in
-                self.onLoginSuccess?()
 
                 print("***************Start Printing User************")
                 print(user)
                 User.currentUser = user
+                
+                self.onLoginSuccess?()
                 
             }, failure: { (error: Error!) -> Void in
                self.onLoginFailed?(error)
@@ -75,6 +76,7 @@ class TwitterClient: BDBOAuth1SessionManager {
         
         
     }
+    
     
     //added success and failure closure arguments so that driver can do custom processing on success and failure
     func getCurrentUser(success: ((User?) -> Void)!, failure: ((Error?) -> Void)!) {
@@ -99,9 +101,90 @@ class TwitterClient: BDBOAuth1SessionManager {
         })
     }
     
+    //note: get calls are asynchronous calls. When it's invoked, it will be executed asynchronously.
+    func getUser(userId: Int64!, screenName: String!, success: ((User?) -> Void)!, failure: ((Error?) -> Void)!) {
+        
+        var parameters = [String: String]()
+        parameters["user_id"] = "\(userId!)"
+        parameters["screen_name"] = screenName
+
+        get("/1.1/users/show.json", parameters: parameters, progress: nil, success: { (task: URLSessionDataTask, response: Any?) -> Void in
+            
+            guard let response = response as? NSDictionary else {return}
+            
+            do  {
+                let json = try JSONSerialization.data(withJSONObject: response, options: .prettyPrinted)
+                print(json)
+                let user = try JSONDecoder().decode(User.self, from: json)
+                
+                success(user)
+                
+            } catch let jsonError {
+                print("Error: \(jsonError.localizedDescription)")
+            }
+            
+        }, failure: { (task: URLSessionDataTask?, error: Error) -> Void in
+            failure(error)
+        })
+    }
+    
     func getHomeTimeline(parameters: [String: String]?, success: (([Tweet]?) -> Void)!, failure: ((Error?) -> Void)!) {
 
         get("/1.1/statuses/home_timeline.json", parameters: parameters, progress: nil, success: { (task: URLSessionDataTask, response: Any?) -> Void in
+            
+            guard let response = response as? [NSDictionary] else {return}
+            
+            do  {
+                let json = try JSONSerialization.data(withJSONObject: response, options: .prettyPrinted)
+                print(json)
+                let homeTimeline = try JSONDecoder().decode([Tweet].self, from: json)
+                
+                success(homeTimeline)
+                
+            } catch let jsonError {
+                print("Error: \(jsonError.localizedDescription)")
+            }
+            
+        }, failure: { (task: URLSessionDataTask?, error: Error) -> Void in
+            failure(error)
+        })
+        
+    }
+    
+    func getUserTimeline(userId: Int64!, screenName: String!, maxId: Int64?, success: (([Tweet]?) -> Void)!, failure: ((Error?) -> Void)!) {
+        
+        var parameters = [String: String]()
+        parameters["user_id"] = "\(userId!)"
+        parameters["screen_name"] = screenName
+        
+        if maxId != nil {
+            parameters["max_id"] = "\(maxId!)"
+        }
+        
+        get("/1.1/statuses/user_timeline.json", parameters: parameters, progress: nil, success: { (task: URLSessionDataTask, response: Any?) -> Void in
+            
+            guard let response = response as? [NSDictionary] else {return}
+            
+            do  {
+                let json = try JSONSerialization.data(withJSONObject: response, options: .prettyPrinted)
+                print(json)
+                let userTimeline = try JSONDecoder().decode([Tweet].self, from: json)
+                
+                success(userTimeline)
+                
+            } catch let jsonError {
+                print("Error: \(jsonError.localizedDescription)")
+            }
+            
+        }, failure: { (task: URLSessionDataTask?, error: Error) -> Void in
+            failure(error)
+        })
+        
+    }
+    
+    func getMentionsTimeline(parameters: [String: String]?, success: (([Tweet]?) -> Void)!, failure: ((Error?) -> Void)!) {
+        
+        get("/1.1/statuses/mentions_timeline.json", parameters: parameters, progress: nil, success: { (task: URLSessionDataTask, response: Any?) -> Void in
             
             guard let response = response as? [NSDictionary] else {return}
             

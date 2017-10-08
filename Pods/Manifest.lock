@@ -16,6 +16,7 @@ PODS:
     - AFNetworking/NSURLSession
   - BDBOAuth1Manager (2.0.0):
     - AFNetworking/NSURLSession (~> 3.0.0)
+  - FLEX (2.4.0)
   - NSDateMinimalTimeAgo (0.1.0)
   - UITextView+Placeholder (1.2.0)
   - UIView+Borders (0.0.2)
@@ -23,6 +24,7 @@ PODS:
 DEPENDENCIES:
   - AFNetworking
   - BDBOAuth1Manager
+  - FLEX
   - NSDateMinimalTimeAgo
   - UITextView+Placeholder
   - UIView+Borders
@@ -30,10 +32,11 @@ DEPENDENCIES:
 SPEC CHECKSUMS:
   AFNetworking: a0075feb321559dc78d9d85b55d11caa19eabb93
   BDBOAuth1Manager: 92d17d06f8a648602962304cd2f35ae7394fa001
+  FLEX: bd1a39e55b56bb413b6f1b34b3c10a0dc44ef079
   NSDateMinimalTimeAgo: 71102cc43bb1aa0b5692c953a1abb8c305691475
   UITextView+Placeholder: 77680995fcdd07c3f52ec92fe1150874a2ac89ff
   UIView+Borders: d632c8bef679e7f98e913b569e972858742841ce
 
-PODFILE CHECKSUM: 50ae529a3a6200f26a90cd5e15393cf1800b8a1a
+PODFILE CHECKSUM: e9de4044cae446292cf3d4fc1ff037b8789bea52
 
 COCOAPODS: 1.3.1

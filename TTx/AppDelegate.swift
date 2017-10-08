@@ -16,14 +16,31 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
 
 
+    fileprivate func displayHomePage() {
+        let stortboard = UIStoryboard(name: "Main", bundle: nil)
+        //let vc = stortboard.instantiateViewController(withIdentifier: "tweetsNavViewController")
+        
+        let hamburgerViewController = stortboard.instantiateViewController(withIdentifier: "hbgViewController") as! HamburgerViewController
+        
+        window?.rootViewController = hamburgerViewController
+        
+//        let menuNavController = stortboard.instantiateViewController(withIdentifier: "menuViewNavController") as! UINavigationController
+//
+//        let menuVC = menuNavController.viewControllers[0] as! MenuViewController
+
+        let menuVC = stortboard.instantiateViewController(withIdentifier: "menuViewController") as! MenuViewController
+        
+        menuVC.hamburgerViewController = hamburgerViewController
+        
+        hamburgerViewController.menuViewController = menuVC
+    }
+    
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         
         if User.currentUser != nil {
             
-            let stortboard = UIStoryboard(name: "Main", bundle: nil)
-            let vc = stortboard.instantiateViewController(withIdentifier: "tweetsNavViewController")
-            window?.rootViewController = vc
+            displayHomePage()
             
         } else {
             print ("there is no current user...direct user to log in...")
@@ -36,6 +53,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             self.window?.rootViewController = vc
             
         }
+        
+        
+        UIApplication.shared.statusBarStyle = .lightContent
         
         return true
     }

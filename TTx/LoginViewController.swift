@@ -36,4 +36,22 @@ class LoginViewController: UIViewController {
         
     }
     
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        
+        if segue.identifier == "loginSegue" {
+            
+            guard let dvc = segue.destination as? HamburgerViewController else { return }
+            
+            let stortboard = UIStoryboard(name: "Main", bundle: nil)
+
+            let menuVC = stortboard.instantiateViewController(withIdentifier: "menuViewController") as! MenuViewController
+            
+            menuVC.hamburgerViewController = dvc
+            
+            dvc.menuViewController = menuVC
+            
+        }
+        
+    }
+    
 }

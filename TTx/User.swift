@@ -10,12 +10,18 @@ import Foundation
 
 struct User: Decodable, Encodable {
     
+    let id: Int64?
     let name: String?
     let screen_name: String?
     let location: String?
     let profile_image_url_https: String?
     let description: String?
-
+    
+    let followers_count: Int?
+    let friends_count: Int?
+    let profile_banner_url: String?
+    let profile_background_image_url_https: String?
+    
     static let userLogoutNotification = NSNotification.Name(rawValue: "UserDidLogout")
 
     static var _currentUser: User?
