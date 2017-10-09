@@ -25,7 +25,7 @@ class HomeTimelineViewController: UIViewController, UITableViewDataSource, UITab
         
     override func viewDidLoad() {
         super.viewDidLoad()
-        FLEXManager.shared().showExplorer()
+        //FLEXManager.shared().showExplorer()
         // Do any additional setup after loading the view.
         tweetsTableView.estimatedRowHeight = 200
         tweetsTableView.rowHeight = UITableViewAutomaticDimension
