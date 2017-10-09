@@ -16,7 +16,7 @@ class MenuViewController: UIViewController, UITableViewDelegate, UITableViewData
     private var homeTimelineNavController: UINavigationController!
     
     private var mentionNavController: UINavigationController!
-//    private var accountNavController: UIViewController!
+    private var accountNavController: UINavigationController!
 //
     
     var hamburgerViewController: HamburgerViewController!
@@ -24,7 +24,7 @@ class MenuViewController: UIViewController, UITableViewDelegate, UITableViewData
     var viewControllers: [UIViewController] = []
     
     
-    let menus = ["Profile", "Timeline", "Mentions", "Account"]
+    let menus = ["Profile", "Timeline", "Mentions", "Accounts"]
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -49,6 +49,11 @@ class MenuViewController: UIViewController, UITableViewDelegate, UITableViewData
         //mentions vc
         mentionNavController = storyboard.instantiateViewController(withIdentifier: "mentionsNavViewController") as! UINavigationController
         viewControllers.append(mentionNavController)
+        
+        //accounts vc
+        accountNavController = storyboard.instantiateViewController(withIdentifier: "accountsNavViewController") as! UINavigationController
+        viewControllers.append(accountNavController)
+
         
         hamburgerViewController.contentViewController = homeTimelineNavController
     }

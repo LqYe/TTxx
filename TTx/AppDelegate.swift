@@ -16,7 +16,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
 
 
-    fileprivate func displayHomePage() {
+    func displayHomePage() {
         let stortboard = UIStoryboard(name: "Main", bundle: nil)
         //let vc = stortboard.instantiateViewController(withIdentifier: "tweetsNavViewController")
         
@@ -38,6 +38,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         
+//        UserDefaults.standard.removeObject(forKey: "currentTwitterAccounts")
+        if let accountsData = UserDefaults.standard.object(forKey: "currentTwitterAccounts") as? Data {
+            if let accountsDataArray = NSKeyedUnarchiver.unarchiveObject(with: accountsData as Data) as? [Account] {
+                TwitterClient.sharedInstance!.accounts = accountsDataArray
+                
+                for account in TwitterClient.sharedInstance!.accounts {
+                    
+                    if account.selected != nil && account.selected! {
+                        TwitterClient.sharedInstance!.currentAccount = account
+                        User.currentUser = account.user
+                        break
+                    }
+                }
+                
+            }
+        }
+        
         if User.currentUser != nil {
             
             displayHomePage()
@@ -47,10 +64,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         
         NotificationCenter.default.addObserver(forName: User.userLogoutNotification, object: nil, queue:OperationQueue.main) { (Notification) in
-            
+           
             let stortboard = UIStoryboard(name: "Main", bundle: nil)
-            let vc = stortboard.instantiateInitialViewController()
-            self.window?.rootViewController = vc
+            
+            if TwitterClient.sharedInstance!.accounts.count > 0 {
+                
+                let accountsVC = stortboard.instantiateViewController(withIdentifier: "accountsNavViewController")
+                self.window?.rootViewController = accountsVC
+                
+            } else {
+                let vc = stortboard.instantiateInitialViewController()
+                self.window?.rootViewController = vc
+            }
+            
+           
             
         }
         
