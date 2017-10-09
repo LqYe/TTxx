@@ -9,13 +9,13 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "TTx/AccountsViewController.swift"
-            timestampString = "529191344.26718"
+            filePath = "TTx/AccountCell.swift"
+            timestampString = "529211804.196328"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "47"
-            endingLineNumber = "47"
-            landmarkName = "tableView(_:cellForRowAt:)"
+            startingLineNumber = "66"
+            endingLineNumber = "66"
+            landmarkName = "onSwiped(sender:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -25,13 +25,13 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "TTx/AccountsViewController.swift"
-            timestampString = "529191344.267259"
+            filePath = "TTx/AccountCell.swift"
+            timestampString = "529211804.234456"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "48"
-            endingLineNumber = "48"
-            landmarkName = "tableView(_:cellForRowAt:)"
+            startingLineNumber = "68"
+            endingLineNumber = "68"
+            landmarkName = "onSwiped(sender:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -41,29 +41,13 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "TTx/AccountsViewController.swift"
-            timestampString = "529191344.267323"
+            filePath = "TTx/AccountCell.swift"
+            timestampString = "529211804.235447"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "49"
-            endingLineNumber = "49"
-            landmarkName = "tableView(_:cellForRowAt:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "TTx/AccountsViewController.swift"
-            timestampString = "529191344.267385"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "51"
-            endingLineNumber = "51"
-            landmarkName = "tableView(_:cellForRowAt:)"
+            startingLineNumber = "73"
+            endingLineNumber = "73"
+            landmarkName = "onSwiped(sender:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

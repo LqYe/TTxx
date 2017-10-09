@@ -21,7 +21,8 @@ class ProfileViewController: UIViewController, UITableViewDataSource, UITableVie
     var tweets: [Tweet] = [Tweet]()
     var user_tweet_max_id: Int64 = 0;
 
-    
+    let appDelegate = UIApplication.shared.delegate as! AppDelegate
+
     //views
     var spinner: UIActivityIndicatorView!
     
@@ -60,6 +61,33 @@ class ProfileViewController: UIViewController, UITableViewDataSource, UITableVie
         spinner = UIActivityIndicatorView(activityIndicatorStyle: .gray)
         spinner.frame = CGRect(x:0, y: 0, width: self.profileTableView.frame.width, height: 40)
         self.profileTableView.tableFooterView = spinner
+        
+        //add long press gesture
+        
+        let longPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(onLongPressed))
+        navigationController?.navigationBar.addGestureRecognizer(longPressGestureRecognizer)
+        navigationController?.navigationBar.isUserInteractionEnabled = true
+        
+    }
+    
+    @objc func onLongPressed(sender: UILongPressGestureRecognizer) {
+        
+        switch sender.state {
+        case .began:
+            print ("long press starts")
+        case .changed:
+            navigationController?.navigationBar.barTintColor = .lightGray
+        case .ended:
+            let stortboard = UIStoryboard(name: "Main", bundle: nil)
+            let accountsVC = stortboard.instantiateViewController(withIdentifier: "accountsNavViewController")
+            UIView.animate(withDuration: 0.3, animations: {
+                self.appDelegate.window?.rootViewController = accountsVC
+            })
+        default:
+            ()
+        }
+        
+       
     }
 
     override func didReceiveMemoryWarning() {

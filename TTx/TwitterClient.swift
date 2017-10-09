@@ -27,28 +27,38 @@ class TwitterClient: BDBOAuth1SessionManager {
         didSet {
             if (currentAccount != nil) {
                 currentAccount.selected = true
-                TwitterClient.sharedInstance!.requestSerializer.removeAccessToken()
-                TwitterClient.sharedInstance!.requestSerializer.saveAccessToken(currentAccount.accessToken)
+                requestSerializer.removeAccessToken()
+                requestSerializer.saveAccessToken(currentAccount.accessToken)
                 User.currentUser = currentAccount.user
             }
         }
     }
     
     var accounts:[Account] = [Account]()
-        
+    
+    func saveAccounts() {
+        let accountsData = NSKeyedArchiver.archivedData(withRootObject: accounts)
+        defaults.set(accountsData, forKey: "currentTwitterAccounts")
+    }
+    
     func addAccount(newAccount: Account) {
         
         accounts.append(newAccount)
-        var savedAccounts = accounts
-        
-        if let defaultAccounts = defaults.object(forKey: "currentTwitterAccounts") as? [Account] {
-            savedAccounts = defaultAccounts
-        }
-        
-        savedAccounts.append(newAccount)
-        defaults.set(savedAccounts, forKey: "currentTwitterAccounts")
+//        var savedAccounts = accounts
+//
+////        let defaultAccounts = defaults.object(forKey: "currentTwitterAccounts") as? [Account] {
+////            savedAccounts = defaultAccounts
+//        savedAccounts.append(newAccount)
+        saveAccounts()
     }
     
+    func removeAccount(account: Account) {
+        
+        let accountIndex = accounts.index(of: account)
+        accounts.remove(at: accountIndex!)
+
+       saveAccounts()
+    }
     
     func login(success: (() -> Void)!, failure: ((Error?) -> Void)!) {
         
@@ -77,11 +87,32 @@ class TwitterClient: BDBOAuth1SessionManager {
     func logout() {
         User.currentUser = nil
         deauthorize()
+        removeAccount(account: currentAccount)
+        currentAccount = nil
         
         //When user logs out, redict to login page
         //Notification Pattern: send a message to various classes or parts of the app in case of an event
         NotificationCenter.default.post(name: User.userLogoutNotification, object: nil)
         
+        
+    }
+    
+    func logoutAll() {
+        
+        for account in accounts {
+            
+            requestSerializer.removeAccessToken()
+            requestSerializer.saveAccessToken(account.accessToken)
+            deauthorize()
+            
+        }
+        User.currentUser = nil
+        currentAccount = nil
+        accounts.removeAll()
+        defaults.removeObject(forKey: "currentTwitterAccounts")
+        
+        NotificationCenter.default.post(name: User.userLogoutNotification, object: nil)
+
     }
     
     func handleOpenUrl(url: URL) {
@@ -91,6 +122,8 @@ class TwitterClient: BDBOAuth1SessionManager {
         //get access token and then get user and its home timeline on success
         fetchAccessToken(withPath: AppConstants.APIConstants.accessTokenPath, method: "POST", requestToken: requestToken, success: { (accessToken : BDBOAuth1Credential!) -> Void in
             print(accessToken.token)
+
+
             self.getCurrentUser(success: { (user: User!) in
 
                 print("***************Start Printing User************")
@@ -98,9 +131,9 @@ class TwitterClient: BDBOAuth1SessionManager {
                 User.currentUser = user
                 
                 //new logic for multiple account logins
-                let newAccount = Account(user: user, accessToken: accessToken)
-                TwitterClient.sharedInstance!.accounts.append(newAccount)
+                let newAccount = Account(user: user, accessToken: accessToken, selected: true)
                 TwitterClient.sharedInstance!.currentAccount = newAccount
+                TwitterClient.sharedInstance!.addAccount(newAccount: newAccount)
                 
                 self.onLoginSuccess?()
                 

@@ -26,7 +26,12 @@ class AccountsViewController: UIViewController, UITableViewDataSource, UITableVi
 
     }
     
-
+    @IBAction func onLogoutAllClicked(_ sender: Any) {
+        
+        TwitterClient.sharedInstance!.logoutAll()
+        
+    }
+    
     @IBAction func onAddButtonClicked(_ sender: Any) {
         //invoke twitter client to login
         TwitterClient.sharedInstance!.login(success: {
@@ -38,6 +43,9 @@ class AccountsViewController: UIViewController, UITableViewDataSource, UITableVi
         })
     }
     
+    
+    
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return TwitterClient.sharedInstance!.accounts.count
     }
@@ -47,6 +55,16 @@ class AccountsViewController: UIViewController, UITableViewDataSource, UITableVi
         guard let accountCell = accountsTableView.dequeueReusableCell(withIdentifier: "AccountCell") as? AccountCell else {return UITableViewCell()}
 
         accountCell.account = TwitterClient.sharedInstance!.accounts[indexPath.row]
+        accountCell.removeAccount = { (account) in
+            
+            if account.selected != nil && account.selected! {
+               TwitterClient.sharedInstance!.logout()
+            } else {
+               
+                TwitterClient.sharedInstance!.removeAccount(account: account)
+                self.accountsTableView.reloadData()
+            }
+        }
         
         return accountCell
     }
@@ -54,8 +72,10 @@ class AccountsViewController: UIViewController, UITableViewDataSource, UITableVi
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 
        let selectedAccount = TwitterClient.sharedInstance!.accounts[indexPath.row]
+       TwitterClient.sharedInstance!.currentAccount.selected = false
        TwitterClient.sharedInstance!.currentAccount = selectedAccount
-    
+       TwitterClient.sharedInstance!.saveAccounts()
+        
        appDelegate.displayHomePage()
       
     }

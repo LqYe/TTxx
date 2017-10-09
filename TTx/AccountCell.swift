@@ -19,6 +19,13 @@ class AccountCell: UITableViewCell {
     @IBOutlet weak var checkMarkImgWidth: NSLayoutConstraint!
     
     @IBOutlet weak var checkMarkImg: UIImageView!
+    
+    
+    @IBOutlet weak var accountView: UIView!
+    
+    
+    var removeAccount: (Account) -> Void = { (account) in }
+    
     var account: Account!{
         didSet{
             
@@ -30,7 +37,7 @@ class AccountCell: UITableViewCell {
                 
             }
             
-            if account.selected {
+            if account.selected != nil && account.selected! {
                 checkMarkImg.isHidden = false
                 checkMarkImgWidth.constant = 50
                 checkMarkImgHeight.constant = 50
@@ -45,7 +52,34 @@ class AccountCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
+        
+        let swipeGesture = UIPanGestureRecognizer(target: self, action: #selector(onSwiped))
+        accountView.addGestureRecognizer(swipeGesture)
+        accountView.isUserInteractionEnabled = true
+        
     }
+    
+    @objc func onSwiped(sender: UIPanGestureRecognizer) {
+        
+        switch sender.state {
+        case .began:
+            print ("long pan starts")
+        case .changed:
+            if let view = sender.view {
+                let translation = sender.translation(in: sender.view)
+                view.center = CGPoint(x: view.center.x + translation.x, y: view.center.y)
+            }
+        case .ended:
+            print("long pan ended")
+            removeAccount(account)
+        default:
+            break
+        }
+        
+        sender.setTranslation(CGPoint.zero, in: self.superview)
+
+    }
+
 
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)

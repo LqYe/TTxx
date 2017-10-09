@@ -22,6 +22,8 @@ struct User: Decodable, Encodable {
     let profile_banner_url: String?
     let profile_background_image_url_https: String?
     
+    
+    
     static let userLogoutNotification = NSNotification.Name(rawValue: "UserDidLogout")
 
     static var _currentUser: User?
@@ -66,4 +68,26 @@ struct User: Decodable, Encodable {
         }
         
     }
+    
+    
+//    func encode(with aCoder: NSCoder) {
+//        aCoder.encode(self.id, forKey: "id")
+//        aCoder.encode(self.name, forKey: "name")
+//        aCoder.encode(self.screen_name, forKey: "name")
+//        aCoder.encode(self.location, forKey: "location")
+//        aCoder.encode(self.profile_image_url_https, forKey: "profile_image_url_https")
+//        
+//        aCoder.encode(self.description, forKey: "description")
+//        aCoder.encode(self.followers_count, forKey: "followers_count")
+//        aCoder.encode(self.friends_count, forKey: "friends_count")
+//        aCoder.encode(self.profile_banner_url, forKey: "profile_banner_url")
+//        aCoder.encode(self.profile_background_image_url_https, forKey: "profile_background_image_url_https")
+//        
+//    }
+//    
+//    required convenience init(coder decoder: NSCoder) {
+//        
+
+//        
+//    }
 }
