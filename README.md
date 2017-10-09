@@ -18,9 +18,9 @@ The following **required** functionality is completed:
 
 The following **optional** features are implemented:
 
-- [ ] Profile Page
+- [x] Profile Page
    - [ ] Implement the paging view for the user description.
-   - [ ] As the paging view moves, increase the opacity of the background screen. See the actual Twitter app for this effect
+   - [x] As the paging view moves, increase the opacity of the background screen. See the actual Twitter app for this effect
    - [ ] Pulling down the profile page should blur and resize the header image.
 - [x] Account switching
    - [x] Long press on tab bar to bring up Account view with animation
@@ -31,7 +31,10 @@ The following **optional** features are implemented:
 
 The following **additional** features are implemented:
 
-- [ ] List anything else that you can get done to improve the app functionality!
+- [x] List anything else that you can get done to improve the app functionality!
+   - [x] Added a logout all x button at account view to logout all accounts
+   - [x] Allowed users to like a tweet by double tapping on the tweet text at details screen
+   - [x] Added mentions timeline page
 
 Please list two areas of the assignment you'd like to **discuss further with your peers** during the next class (examples include better ways to implement something, how to extend your app in certain ways, etc):
 
@@ -43,7 +46,7 @@ Please list two areas of the assignment you'd like to **discuss further with you
 
 Here's a walkthrough of implemented user stories:
 
-<img src='http://i.imgur.com/link/to/your/gif/file.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
+<img src='TTxx-demo.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
 
 GIF created with [LiceCap](http://www.cockos.com/licecap/).
 
