@@ -1,6 +1,6 @@
 # Project 4 - *TTxx*
 
-Time spent: **X** hours spent in total
+Time spent: **23** hours spent in total
 
 ## User Stories
 
@@ -35,6 +35,7 @@ The following **additional** features are implemented:
    - [x] Added a logout all x button at account view to logout all accounts
    - [x] Allowed users to like a tweet by double tapping on the tweet text at details screen
    - [x] Added mentions timeline page
+   - [x] Explored and used xib file to enable common tableview cell UI design to be reusable by different tableviews
 
 Please list two areas of the assignment you'd like to **discuss further with your peers** during the next class (examples include better ways to implement something, how to extend your app in certain ways, etc):
 
@@ -53,6 +54,9 @@ GIF created with [LiceCap](http://www.cockos.com/licecap/).
 ## Notes
 
 Describe any challenges encountered while building the app.
+
+1. Cannot set non-property-list object in UserDefaults. Have to archive objects into NSData
+2. Passing data betweet views
 
 ## License
 
