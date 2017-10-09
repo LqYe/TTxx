@@ -26,6 +26,9 @@ class ProfileViewController: UIViewController, UITableViewDataSource, UITableVie
     //views
     var spinner: UIActivityIndicatorView!
     
+    var initialContentOffSet: CGPoint = CGPoint()
+
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
@@ -305,4 +308,27 @@ class ProfileViewController: UIViewController, UITableViewDataSource, UITableVie
         }
     }
 
+    
+
+}
+
+extension ProfileViewController: UIScrollViewDelegate {
+    
+    
+    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        initialContentOffSet = scrollView.contentOffset
+    }
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        if initialContentOffSet.y > scrollView.contentOffset.y {
+            print("up")
+            print(scrollView.contentOffset.y)
+            //profileTableView.alpha = min(0.7, abs(scrollView.contentOffset.y) * 0.01)
+        } else {
+            print("down")
+            print(scrollView.contentOffset.y)
+            profileTableView.alpha = min(1, abs(scrollView.contentOffset.y) * 0.01)
+        }
+    }
+    
 }
